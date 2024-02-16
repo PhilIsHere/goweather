@@ -15,7 +15,15 @@ func GetJson(url string, target interface{}) error {
 	//Initialize the HTTP client with a 10 second timeout if the API is slow or unresponsive
 	client = &http.Client{Timeout: 10 * time.Second}
 
-	resp, error := client.Get(url)
+	request, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+
+	//Set the User-Agent
+	request.Header.Set("User-Agent", "PhilIsHere/goweather")
+
+	resp, error := client.Do(request)
 	if error != nil {
 		return error
 	}

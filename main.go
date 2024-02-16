@@ -12,6 +12,7 @@ import (
 	"goweather/coordinates"
 	"goweather/weather"
 	"log"
+	"os"
 	"strings"
 )
 
@@ -58,7 +59,15 @@ func main() {
 		fmt.Println("Beschreibung:", wAlerts.Alerts.DescriptionDe)
 		fmt.Println("Betroffenes Gebiet:", wAlerts.Location.Name, wAlerts.Location.District, wAlerts.Location.State)
 		fmt.Println("Gültig von", wAlerts.Alerts.Effective, "bis", wAlerts.Alerts.Expires)
+		fmt.Println()
 	} else {
 		fmt.Println("Es gibt keine amtlichen Unwetterwarnungen")
+		fmt.Println()
 	}
+
+	//Wait for user input to close the program
+	fmt.Print("Drücke eine beliebige Taste, um das Programm zu beenden.")
+	fmt.Scanln()
+	os.Exit(0)
+
 }
