@@ -18,11 +18,11 @@ in a free, simple JSON API.
 Download the binary from the release page and run it with the following command:
 ./goweather on Unix or .\goweather.exe on Windows
 
-Please note that you need to cd into the directory where the binary is located.
+You can also just double click the binary.
 
 ## My Antivirus Program detects a Trojan!
-This seems to be a common false positive especially with Windows Machines.
-Don't take my word for it. Here's the official Notice from the Golang team: https://go.dev/doc/faq#virus
+This seems to be a common false positive especially on windows machines.
+Don't take my word for it. Here's the official notice from the golang team: https://go.dev/doc/faq#virus
 
 ```
 Why does my virus-scanning software think my Go distribution or compiled binary is infected?
@@ -40,7 +40,7 @@ a bug to the supplier of your virus scanner.
 Maybe in time virus scanners can learn to understand Go programs."
 
 ```
-https://go.dev/doc/faq#virus
+Please rest assured, that the tool does not contain any malicious components.
 
 ## Aknowledgements and Privacy Policies
 The privacy policy of OpenStreetMap can be found here: https://osmfoundation.org/wiki/Privacy_Policy
