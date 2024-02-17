@@ -48,7 +48,6 @@ The privacy policy of OpenStreetMap can be found here: https://osmfoundation.org
 
 Goweather uses the raw data from the [Deutscher
 Wetterdienst](https://www.dwd.de/).
-<a href="https://www.dwd.de/"><img src="dwd.svg" alt="Deutscher Wetterdienst" height="100"></a>
-
 The Data is provided via the [BrightSky API](https://brightsky.dev/).
 
+<a href="https://www.dwd.de/"><img src="dwd.svg" alt="Deutscher Wetterdienst" height="100"></a>
