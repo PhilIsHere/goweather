@@ -1,5 +1,14 @@
 # goweather
 
+[![PhilIsHere - goweather](https://img.shields.io/static/v1?label=PhilIsHere&message=goweather&color=blue&logo=github)](https://github.com/PhilIsHere/goweather "Go to GitHub repo")
+[![stars - goweather](https://img.shields.io/github/stars/PhilIsHere/goweather?style=social)](https://github.com/PhilIsHere/goweather)
+[![forks - goweather](https://img.shields.io/github/forks/PhilIsHere/goweather?style=social)](https://github.com/PhilIsHere/goweather)
+
+[![Buildtest](https://github.com/PhilIsHere/goweather/workflows/Buildtest/badge.svg)](https://github.com/PhilIsHere/goweather/actions?query=workflow:"Buildtest")
+[![GitHub release](https://img.shields.io/github/release/PhilIsHere/goweather?include_prereleases=&sort=semver&color=blue)](https://github.com/PhilIsHere/goweather/releases/)
+[![License](https://img.shields.io/badge/License-GPL--3.0-blue)](https://github.com/PhilIsHere/goweather/blob/main/LICENSE)
+[![issues - goweather](https://img.shields.io/github/issues/PhilIsHere/goweather)](https://github.com/PhilIsHere/goweather/issues)
+
 goweather aims to provide a simple command line interface to get the current weather and forecast for a given location in Germany. The data is provided by the [Deutscher Wetterdienst](https://www.dwd.de/) via the [BrightSky API](https://brightsky.dev/).
 
 The GPS coordinates are provided by the [OpenStreetMap](https://www.openstreetmap.org/) API.
