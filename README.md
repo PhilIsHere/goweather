@@ -25,15 +25,16 @@ This seems to be a common false positive especially on windows machines.
 Don't take my word for it. Here's the official notice from the golang team: https://go.dev/doc/faq#virus
 
 ```
-Why does my virus-scanning software think my Go distribution or compiled binary is infected?
+Why does my virus-scanning software think my Go
+distribution or compiled binary is infected?
 
-This is a common occurrence, especially on Windows machines, and is almost always a false positive.
-Commercial virus scanning programs are often confused by the structure of Go binaries,
-which they don't see as often as those compiled from other languages.
+This is a common occurrence, especially on Windows machines,
+and is almost always a false positive.
+Commercial virus scanning programs are often confused by
+the structure of Go binaries, which they don't see as often
+as those compiled from other languages.
 
-If you've just installed the Go distribution and the system reports it is infected,
-that's certainly a mistake. To be really thorough, you can verify the
-download by comparing the checksum with those on the downloads page.
+(...)
 
 In any case, if you believe the report is in error, please report
 a bug to the supplier of your virus scanner.
@@ -47,7 +48,6 @@ The privacy policy of OpenStreetMap can be found here: https://osmfoundation.org
 
 Goweather uses the raw data from the [Deutscher
 Wetterdienst](https://www.dwd.de/).
+<a href="https://www.dwd.de/"><img src="https://www.dwd.de/SharedDocs/bilder/DE/logos/dwd/dwd_logo_258x69.png" alt="Deutscher Wetterdienst"></a>
 The Data is provided via the [BrightSky API](https://brightsky.dev/).
-
-<a href="https://www.dwd.de/"><img src="docs/img/dwd.svg" alt="Deutscher Wetterdienst" height="100"></a>
 
