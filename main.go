@@ -8,12 +8,12 @@ The temperature is displayed in both Celsius and Fahrenheit.
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"goweather/coordinates"
 	"goweather/weather"
 	"log"
 	"os"
-	"strings"
 )
 
 // Struct for the weather data
@@ -29,25 +29,30 @@ type WeatherData struct {
 
 // Main function
 func main() {
+	reader := bufio.NewReader(os.Stdin)
 
 	//Ask the user for the city
 	fmt.Println("Bitte gib eine Stadt, PLZ oder Ort von Interesse ein: ")
 	var city string
-	fmt.Scanln(&city)
-
-	//Check for German UmLaute
-	if strings.ContainsAny(city, "äöüß") {
-		log.Fatal("Ersetze bitte die Umlaute ä, ö, ü und ß durch ae, oe, ue und ss und versuche es erneut.")
-	}
+	city, _ = reader.ReadString('\n')
 
 	//Get the LAT and LON coordinates
-	lat, lon := coordinates.GetCoordinates(city)
+	lat, lon, err := coordinates.GetCoordinates(city)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	//Get Weather Data
-	wData := weather.GetWeather(lat, lon)
+	wData, err := weather.GetWeather(lat, lon)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	//Get Alerts
-	wAlerts := weather.GetAlerts(lat, lon)
+	wAlerts, err := weather.GetAlerts(lat, lon)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	//Print the weather data
 	fmt.Println("Die Station", wData.Sources[0].StationName, "meldet für", city, wData.Weather.Condition, "bei", wData.Weather.Temperature, "°C")

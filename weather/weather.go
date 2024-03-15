@@ -3,7 +3,7 @@ package weather
 import (
 	"fmt"
 	"goweather/jsonhandling"
-	"os"
+	"net/url"
 )
 
 // struct for the weather data from brightsky API
@@ -33,11 +33,32 @@ type Alerts struct {
 	}
 }
 
+//Function to generate the base URL for the Brightsky API
+
+func generateURL(lat string, lon string, endpoint string) (string, error){
+	baseURL, err := url.Parse("https://api.brightsky.dev/")
+	if err != nil {
+		return "", fmt.Errorf("error parsing URL: %v", err)
+	}
+
+	baseURL.Path += endpoint
+
+	parameters := url.Values{}
+	parameters.Add("lat", lat)
+	parameters.Add("lon", lon)
+	baseURL.RawQuery = parameters.Encode()
+
+	return baseURL.String(), nil
+}
+
 // Function to get the weather data from the given City
-func GetWeather(lat string, lon string) WeatherData {
+func GetWeather(lat string, lon string) (WeatherData, error) {
 
 	//Initialize the URL
-	url := "https://api.brightsky.dev/current_weather?lat=" + lat + "&lon=" + lon
+	url, err := generateURL(lat, lon, "current_weather")
+	if err != nil{
+		return WeatherData{}, fmt.Errorf("error generating Weather-URL: %v", err)
+	}
 
 	//Initialize the weather struct
 	var weather WeatherData
@@ -47,19 +68,21 @@ func GetWeather(lat string, lon string) WeatherData {
 
 	//Check if array is empty
 	if len(weather.Sources) == 0 {
-		fmt.Println("Please enter a german city or POI")
-		os.Exit(2)
+		return WeatherData{}, fmt.Errorf("no weather data found for %s, %s", lat, lon)
 	}
 
 	//Return the weather data
-	return weather
+	return weather, nil
 }
 
 // Function to get the alerts from the given City
-func GetAlerts(lat string, lon string) Alerts {
+func GetAlerts(lat string, lon string) (Alerts, error) {
 
 	//Initialize the URL
-	url := "https://api.brightsky.dev/alerts?lat=" + lat + "&lon=" + lon
+	url, err := generateURL(lat, lon, "alerts")
+	if err != nil{
+		return Alerts{}, fmt.Errorf("error generating Alerts-URL: %v", err)
+	}
 
 	//Initialize the alerts struct
 	var alerts Alerts
@@ -68,5 +91,5 @@ func GetAlerts(lat string, lon string) Alerts {
 	jsonhandling.GetJson(url, &alerts)
 
 	//Return the alerts
-	return alerts
+	return alerts, nil
 }
