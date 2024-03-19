@@ -1,5 +1,5 @@
 /*
-This is a simple program that uses the https://brightsky.dev API to get the weather for a given uinput.
+This is a simple program that uses the https://brightsky.dev API to get the weather for a given City, Street or POI.
 To recieve the needed LAT and LON coordinates, the program uses the https://nominatim.openstreetmap.org API.
 The temperature is displayed in both Celsius and Fahrenheit.
 */
