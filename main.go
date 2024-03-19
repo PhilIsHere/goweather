@@ -13,6 +13,7 @@ import (
 	"goweather/weather"
 	"log"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -34,11 +35,12 @@ func main() {
 
 	//Ask the user for the city
 	fmt.Println("Bitte gib eine deutsche Adresse, PLZ oder Sehenswürdigkeit ein: ")
-	var uinput string
-	uinput, _ = reader.ReadString('\n')
+	var uInput string
+	uInput, _ = reader.ReadString('\n')
+	uInput = strings.TrimSpace(uInput)
 
 	//Get the LAT and LON coordinates
-	lat, lon, err := coordinates.GetCoordinates(uinput)
+	lat, lon, err := coordinates.GetCoordinates(uInput)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -56,7 +58,7 @@ func main() {
 	}
 
 	//Print the weather data
-	fmt.Println("Die Station", wData.Sources[0].StationName, "meldet für", uinput, wData.Weather.Condition, "bei", wData.Weather.Temperature, "°C")
+	fmt.Println("Die Station", wData.Sources[0].StationName, "meldet für", uInput, wData.Weather.Condition, "bei", wData.Weather.Temperature, "°C")
 
 	//Print the alerts red and bold if there are any
 	if wAlerts.Alerts.EventDe != "" {

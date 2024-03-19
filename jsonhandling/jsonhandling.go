@@ -5,10 +5,41 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"time"
 )
 
 var client *http.Client
+
+func GenerateURL(apiLink string, apiEndpoint string, params map[string]string) (string, error) {
+	baseURL, err := url.Parse(apiLink)
+	if err != nil {
+		return "", fmt.Errorf("error parsing URL: %v", err)
+	}
+
+	baseURL.Path += apiEndpoint
+
+	parameters := url.Values{}
+	for key, value := range params {
+		parameters.Add(key, value)
+	}
+	baseURL.RawQuery = parameters.Encode()
+
+	return baseURL.String(), nil
+}
+
+func CreateParams(params ...string) (map[string]string, error) {
+	if len(params)%2 != 0 {
+		return nil, fmt.Errorf("required even number of parameters, example: CreateParams(\"key1\", \"value1\", \"key2\", \"value2\")")
+	}
+
+	paramMap := make(map[string]string)
+	for i := 0; i < len(params); i += 2 {
+		paramMap[params[i]] = params[i+1]
+	}
+
+	return paramMap, nil
+}
 
 // Function to get a JSON Object from the given URL
 // The URL is the API endpoint and the target is the struct where the JSON data will be stored
