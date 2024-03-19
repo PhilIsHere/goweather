@@ -3,7 +3,6 @@ package coordinates
 import (
 	"fmt"
 	"goweather/jsonhandling"
-	"os"
 )
 
 // Struct for the LAT and LON coordinates
@@ -13,22 +12,33 @@ type Location struct {
 }
 
 // Function to get the LAT and LON coordinates from the given city
-func GetCoordinates(city string) (string, string) {
+func GetCoordinates(userInput string) (string, string, error) {
+
+	//Parameters for GET request
+	params, err := jsonhandling.CreateParams("q", userInput, "format", "jsonv2", "limit", "1")
+	if err != nil {
+		return "", "", fmt.Errorf("error creating parameters: %v", err)
+	}
+
 	//Initialize the URL
-	url := "https://nominatim.openstreetmap.org/search?q=" + city + "&format=jsonv2&limit=1"
+	url, err := jsonhandling.GenerateURL("https://nominatim.openstreetmap.org", "search", params)
+	if err != nil {
+		return "", "", fmt.Errorf("error generating URL: %v", err)
+	}
 
 	//Initialize the location struct
 	var location []Location
 
 	//Get the JSON data from the API
-	resp := jsonhandling.GetJson(url, &location)
+	err = jsonhandling.GetJson(url, &location)
+	if err != nil {
+		return "", "", fmt.Errorf("error getting coordinates: %v", err)
+	}
 
-	//Check for errors
-	if resp != nil {
-		fmt.Println("Error getting coordinates: ", resp)
-		os.Exit(1)
+	if len(location) == 0 {
+		return "", "", fmt.Errorf("no coordinates found for %s", userInput)
 	}
 
 	//Return the LAT and LON coordinates
-	return location[0].Lat, location[0].Lon
+	return location[0].Lat, location[0].Lon, nil
 }

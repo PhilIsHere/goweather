@@ -3,7 +3,6 @@ package weather
 import (
 	"fmt"
 	"goweather/jsonhandling"
-	"os"
 )
 
 // struct for the weather data from brightsky API
@@ -34,32 +33,52 @@ type Alerts struct {
 }
 
 // Function to get the weather data from the given City
-func GetWeather(lat string, lon string) WeatherData {
+func GetWeather(lat string, lon string) (WeatherData, error) {
+
+	//Parameters for GET request
+	params, err := jsonhandling.CreateParams("lat", lat, "lon", lon)
+	if err != nil {
+		return WeatherData{}, fmt.Errorf("error creating parameters: %v", err)
+	}
 
 	//Initialize the URL
-	url := "https://api.brightsky.dev/current_weather?lat=" + lat + "&lon=" + lon
+	url, err := jsonhandling.GenerateURL("https://api.brightsky.dev", "current_weather", params)
+	if err != nil {
+		return WeatherData{}, fmt.Errorf("error generating Weather-URL: %v", err)
+	}
 
 	//Initialize the weather struct
 	var weather WeatherData
 
 	//Get the JSON data from the API
-	jsonhandling.GetJson(url, &weather)
+	err = jsonhandling.GetJson(url, &weather)
+	if err != nil {
+		return WeatherData{}, fmt.Errorf("error getting weather data: %v", err)
+	}
 
 	//Check if array is empty
 	if len(weather.Sources) == 0 {
-		fmt.Println("Please enter a german city or POI")
-		os.Exit(2)
+		return WeatherData{}, fmt.Errorf("no weather data found for %s, %s", lat, lon)
 	}
 
 	//Return the weather data
-	return weather
+	return weather, nil
 }
 
 // Function to get the alerts from the given City
-func GetAlerts(lat string, lon string) Alerts {
+func GetAlerts(lat string, lon string) (Alerts, error) {
+
+	//Parameters for GET request
+	params, err := jsonhandling.CreateParams("lat", lat, "lon", lon)
+	if err != nil {
+		return Alerts{}, fmt.Errorf("error creating parameters: %v", err)
+	}
 
 	//Initialize the URL
-	url := "https://api.brightsky.dev/alerts?lat=" + lat + "&lon=" + lon
+	url, err := jsonhandling.GenerateURL("https://api.brightsky.dev", "alerts", params)
+	if err != nil {
+		return Alerts{}, fmt.Errorf("error generating Alerts-URL: %v", err)
+	}
 
 	//Initialize the alerts struct
 	var alerts Alerts
@@ -68,5 +87,5 @@ func GetAlerts(lat string, lon string) Alerts {
 	jsonhandling.GetJson(url, &alerts)
 
 	//Return the alerts
-	return alerts
+	return alerts, nil
 }
