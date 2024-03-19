@@ -18,4 +18,4 @@ jobs:
           go-version: '1.22'
 
       - name: Build binary
-        run: go build -o main -v .
+        run: go build -ldflags "-w -s" -o main -v .
