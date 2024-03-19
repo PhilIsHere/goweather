@@ -35,7 +35,7 @@ type Alerts struct {
 
 //Function to generate the base URL for the Brightsky API
 
-func generateURL(lat string, lon string, endpoint string) (string, error){
+func generateURL(lat string, lon string, endpoint string) (string, error) {
 	baseURL, err := url.Parse("https://api.brightsky.dev/")
 	if err != nil {
 		return "", fmt.Errorf("error parsing URL: %v", err)
@@ -56,7 +56,7 @@ func GetWeather(lat string, lon string) (WeatherData, error) {
 
 	//Initialize the URL
 	url, err := generateURL(lat, lon, "current_weather")
-	if err != nil{
+	if err != nil {
 		return WeatherData{}, fmt.Errorf("error generating Weather-URL: %v", err)
 	}
 
@@ -80,7 +80,7 @@ func GetAlerts(lat string, lon string) (Alerts, error) {
 
 	//Initialize the URL
 	url, err := generateURL(lat, lon, "alerts")
-	if err != nil{
+	if err != nil {
 		return Alerts{}, fmt.Errorf("error generating Alerts-URL: %v", err)
 	}
 

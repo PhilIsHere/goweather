@@ -1,8 +1,8 @@
 package jsonhandling
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"time"
@@ -32,7 +32,7 @@ func GetJson(url string, target interface{}) error {
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
-	if err != nil{
+	if err != nil {
 		return fmt.Errorf("error reading response: %v", err)
 
 	}

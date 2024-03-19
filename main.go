@@ -74,19 +74,19 @@ func main() {
 	//Wait for user input to close the program or close after 5 seconds
 	fmt.Println("Drücke eine beliebige Taste, um das Programm zu beenden.")
 	go func() {
-			go func() {
-				for i := 5; i > 0; i-- {
-					fmt.Printf("\rDas Programm wird in %d Sekunden automatisch beendet...", i-1)
-					time.Sleep(1 * time.Second)
-				}
-			}()
-				input, _ := reader.ReadString('\n')
-				inputChannel <- input
-			}()
-			select{
-				case <-inputChannel:
-					log.Println("Programm beendet")
-				case <-time.After(5 * time.Second):
+		go func() {
+			for i := 5; i > 0; i-- {
+				fmt.Printf("\rDas Programm wird in %d Sekunden automatisch beendet...", i-1)
+				time.Sleep(1 * time.Second)
 			}
-		os.Exit(0)
+		}()
+		input, _ := reader.ReadString('\n')
+		inputChannel <- input
+	}()
+	select {
+	case <-inputChannel:
+		log.Println("Programm beendet")
+	case <-time.After(5 * time.Second):
+	}
+	os.Exit(0)
 }
