@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"goweather/coordinates"
 	"goweather/weather"
+	"goweather/jsonhandling"
 	"log"
 	"os"
 	"strings"
@@ -32,6 +33,7 @@ type WeatherData struct {
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	inputChannel := make(chan string)
+	jsonHandler := jsonhandling.DefaultJSONHandler{}
 
 	//Ask the user for the city
 	fmt.Println("Bitte gib eine deutsche Adresse, PLZ oder Sehenswürdigkeit ein: ")
@@ -40,19 +42,19 @@ func main() {
 	uInput = strings.TrimSpace(uInput)
 
 	//Get the LAT and LON coordinates
-	lat, lon, err := coordinates.GetCoordinates(uInput)
+	lat, lon, err := coordinates.GetCoordinates(jsonHandler, uInput)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	//Get Weather Data
-	wData, err := weather.GetWeather(lat, lon)
+	wData, err := weather.GetWeather(jsonHandler, lat, lon)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	//Get Alerts
-	wAlerts, err := weather.GetAlerts(lat, lon)
+	wAlerts, err := weather.GetAlerts(jsonHandler, lat, lon)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -12,16 +12,16 @@ type Location struct {
 }
 
 // Function to get the LAT and LON coordinates from the given city
-func GetCoordinates(userInput string) (string, string, error) {
+func GetCoordinates(jh jsonhandling.DefaultJSONHandler, userInput string) (string, string, error) {
 
 	//Parameters for GET request
-	params, err := jsonhandling.CreateParams("q", userInput, "format", "jsonv2", "limit", "1")
+	params, err := jh.CreateParams("q", userInput, "format", "jsonv2", "limit", "1")
 	if err != nil {
 		return "", "", fmt.Errorf("error creating parameters: %v", err)
 	}
 
 	//Initialize the URL
-	url, err := jsonhandling.GenerateURL("https://nominatim.openstreetmap.org", "search", params)
+	url, err := jh.GenerateURL("https://nominatim.openstreetmap.org", "search", params)
 	if err != nil {
 		return "", "", fmt.Errorf("error generating URL: %v", err)
 	}
@@ -30,7 +30,7 @@ func GetCoordinates(userInput string) (string, string, error) {
 	var location []Location
 
 	//Get the JSON data from the API
-	err = jsonhandling.GetJson(url, &location)
+	err = jh.GetJson(url, &location)
 	if err != nil {
 		return "", "", fmt.Errorf("error getting coordinates: %v", err)
 	}

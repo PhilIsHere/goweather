@@ -33,16 +33,16 @@ type Alerts struct {
 }
 
 // Function to get the weather data from the given City
-func GetWeather(lat string, lon string) (WeatherData, error) {
+func GetWeather(jh jsonhandling.DefaultJSONHandler, lat string, lon string) (WeatherData, error) {
 
 	//Parameters for GET request
-	params, err := jsonhandling.CreateParams("lat", lat, "lon", lon)
+	params, err := jh.CreateParams("lat", lat, "lon", lon)
 	if err != nil {
 		return WeatherData{}, fmt.Errorf("error creating parameters: %v", err)
 	}
 
 	//Initialize the URL
-	url, err := jsonhandling.GenerateURL("https://api.brightsky.dev", "current_weather", params)
+	url, err := jh.GenerateURL("https://api.brightsky.dev", "current_weather", params)
 	if err != nil {
 		return WeatherData{}, fmt.Errorf("error generating Weather-URL: %v", err)
 	}
@@ -51,7 +51,7 @@ func GetWeather(lat string, lon string) (WeatherData, error) {
 	var weather WeatherData
 
 	//Get the JSON data from the API
-	err = jsonhandling.GetJson(url, &weather)
+	err = jh.GetJson(url, &weather)
 	if err != nil {
 		return WeatherData{}, fmt.Errorf("error getting weather data: %v", err)
 	}
@@ -66,16 +66,16 @@ func GetWeather(lat string, lon string) (WeatherData, error) {
 }
 
 // Function to get the alerts from the given City
-func GetAlerts(lat string, lon string) (Alerts, error) {
+func GetAlerts(jh jsonhandling.DefaultJSONHandler, lat string, lon string) (Alerts, error) {
 
 	//Parameters for GET request
-	params, err := jsonhandling.CreateParams("lat", lat, "lon", lon)
+	params, err := jh.CreateParams("lat", lat, "lon", lon)
 	if err != nil {
 		return Alerts{}, fmt.Errorf("error creating parameters: %v", err)
 	}
 
 	//Initialize the URL
-	url, err := jsonhandling.GenerateURL("https://api.brightsky.dev", "alerts", params)
+	url, err := jh.GenerateURL("https://api.brightsky.dev", "alerts", params)
 	if err != nil {
 		return Alerts{}, fmt.Errorf("error generating Alerts-URL: %v", err)
 	}
@@ -84,7 +84,7 @@ func GetAlerts(lat string, lon string) (Alerts, error) {
 	var alerts Alerts
 
 	//Get the JSON data from the API
-	jsonhandling.GetJson(url, &alerts)
+	jh.GetJson(url, &alerts)
 
 	//Return the alerts
 	return alerts, nil
