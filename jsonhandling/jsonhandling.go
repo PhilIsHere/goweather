@@ -46,7 +46,7 @@ func (jh DefaultJSONHandler) CreateParams(params ...string) (map[string]string, 
 	for i := 0; i < len(params); i += 2 {
 		paramMap[params[i]] = params[i+1]
 	}
-
+  
 	return paramMap, nil
 }
 
@@ -78,4 +78,5 @@ func (jh DefaultJSONHandler) GetJson(url string, target interface{}) error {
 	}
 
 	return nil
+
 }
