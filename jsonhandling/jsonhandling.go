@@ -8,10 +8,18 @@ import (
 	"net/url"
 	"time"
 )
+// JSONHandler defines the interface for handling JSON data.
+type JSONHandler interface {
+	GenerateURL(apiLink string, apiEndpoint string, params map[string]string) (string, error)
+	CreateParams(params ...string) (map[string]string, error)
+	GetJson(url string, target interface{}) error
+}
 
-var client *http.Client
+// DefaultJSONHandler implements the JSONHandler interface.
+type DefaultJSONHandler struct{}
 
-func GenerateURL(apiLink string, apiEndpoint string, params map[string]string) (string, error) {
+// GenerateURL generates a URL with the given API link, endpoint, and parameters.
+func (jh DefaultJSONHandler) GenerateURL(apiLink string, apiEndpoint string, params map[string]string) (string, error) {
 	baseURL, err := url.Parse(apiLink)
 	if err != nil {
 		return "", fmt.Errorf("error parsing URL: %v", err)
@@ -28,7 +36,8 @@ func GenerateURL(apiLink string, apiEndpoint string, params map[string]string) (
 	return baseURL.String(), nil
 }
 
-func CreateParams(params ...string) (map[string]string, error) {
+// CreateParams creates a map of parameters from the given key-value pairs.
+func (jh DefaultJSONHandler) CreateParams(params ...string) (map[string]string, error) {
 	if len(params)%2 != 0 {
 		return nil, fmt.Errorf("required even number of parameters, example: CreateParams(\"key1\", \"value1\", \"key2\", \"value2\")")
 	}
@@ -37,23 +46,19 @@ func CreateParams(params ...string) (map[string]string, error) {
 	for i := 0; i < len(params); i += 2 {
 		paramMap[params[i]] = params[i+1]
 	}
-
+  
 	return paramMap, nil
 }
 
-// Function to get a JSON Object from the given URL
-// The URL is the API endpoint and the target is the struct where the JSON data will be stored
-func GetJson(url string, target interface{}) error {
-
-	//Initialize the HTTP client with a 5 second timeout if the API is slow or unresponsive
-	client = &http.Client{Timeout: 5 * time.Second}
+// GetJson retrieves a JSON object from the given URL and stores it in the target struct.
+func (jh DefaultJSONHandler) GetJson(url string, target interface{}) error {
+	client := &http.Client{Timeout: 5 * time.Second}
 
 	request, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return fmt.Errorf("error creating request: %v", err)
 	}
 
-	//Set the User-Agent
 	request.Header.Set("User-Agent", "PhilIsHere/goweather")
 
 	resp, err := client.Do(request)
@@ -65,7 +70,6 @@ func GetJson(url string, target interface{}) error {
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("error reading response: %v", err)
-
 	}
 
 	err = json.Unmarshal(body, target)
@@ -74,4 +78,5 @@ func GetJson(url string, target interface{}) error {
 	}
 
 	return nil
+
 }
